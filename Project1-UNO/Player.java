@@ -16,13 +16,12 @@ public class Player
 	int numberOfCards = 0; // total number of cards the player has
 	Player nextPlayer;
 	Player prevPlayer;
-	ArrayList<Card> playerDeck;// = new ArrayList<Card>() ; //array of cards object each player hass
+	ArrayList<Card> playerDeck; //array of cards object each player hass
 	
 	Scanner scnr = new Scanner (System.in);
 	
 	
 	//Constructor
-	
 	public Player(int playerNum)
 	{
 		playerName = "";
@@ -32,55 +31,16 @@ public class Player
 		setPlayerName();
 	}
 	
-//	public void addPlayers(Scanner sc) {
-//		this.players = new ArrayList<Player>();
-//	}
-	
-//	Get Player name
+	//Get Player name
 	public void setPlayerName() {
 		System.out.print("Enter name of player " + (playerNumber + 1) + ": ");
 		playerName = scnr.next();
 		System.out.println();
 		}
-//		try 
-//		{
-//			System.out.println("Enter the number of Players playing Uno");
-//			playerNum = scnr.nextInt();
-//	
-//		}
-//		catch(InputMismatchException e) 
-//		{
-//			System.out.println("Please enter a number!");
-//			scnr.nextLine();
-//			playerNum = scnr.nextInt();
-//		}
-		
 
-//		
-//		scnr.close();
-//
-//		
-//	}
-	
-//	public ArrayList<Card> getPlayerHand() {
-//		return playerDeck;
-//		
-//	}
-
-	//Add a card to players deck
-//	public void drawCard(Card card) { 
-//
-//			numberOfCards++;
-//			//implement create card method
-//			//TODO:
-//			
-//			playerDeck.add(card);		
-//		
-//	}
 	
 	//remove a card from players deck
 	public void removeCard(int index) {
-		//TODO: remove card from players hand and add it to the discard pile
 		playerDeck.remove(index); 
 	}
 	
@@ -90,8 +50,9 @@ public class Player
 		System.out.println(playerName + "'s cards");
 		for (int i = 0; i < playerDeck.size(); i++) 
 		{
-	        System.out.println(i + ": " + playerDeck.get(i).cardColorToString() + " " + playerDeck.get(i).cardTypeToString());
+	        System.out.println((i +1) + ": " + playerDeck.get(i).cardColorToString() + " " + playerDeck.get(i).cardTypeToString());
 			}
+		System.out.println((playerDeck.size() + 1) + ": Draw Card") ;
 	
 	
 	}
