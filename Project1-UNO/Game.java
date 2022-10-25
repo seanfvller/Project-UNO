@@ -17,6 +17,7 @@ public class Game {
 	static Player newPlayerA, newPlayerB, newPlayerC;
 	static Scanner scnr = new Scanner (System.in);
 	
+	
 	public static void gameStart() {
 		
 		try {
@@ -25,7 +26,7 @@ public class Game {
 		option = scnr.nextInt();
 
 			if(option == 1){
-				System.out.println("Please enter the amount of players:");
+				System.out.println("Please enter the amount of players: ");
 			
 				numberOfPlayers = scnr.nextInt();
 				
@@ -43,13 +44,14 @@ public class Game {
 			else if(option == 2){
 				quitGame();
 			}
+			
 		}
 		catch(InputMismatchException e) 
-			{
-				System.out.println("Please enter a number!");
-				scnr.nextLine();
-				numberOfPlayers = scnr.nextInt();
-			}
+		{
+			System.out.println("Please enter a number!");
+			scnr.nextLine();
+			
+		}
 		
 	}
 
@@ -68,14 +70,30 @@ public class Game {
 			player.displayPlayerDeck();
 			System.out.println("Select a card by inputting its corresponding integer value.");
 		try {
-			cardChoice = scnr.nextInt();
+			cardChoice = scnr.nextInt() - 1;
+			
+			if(cardChoice == (player.playerDeck.size())) {
+				drawCard(1, player.playerDeck);
+				
+				if (gameDirection == 0) {
+					playerTurn(player.nextPlayer,0);
+				}
+				
+				else if (gameDirection == 1) {
+					playerTurn(player.prevPlayer,0);
+				}
 
-				if(checkCardValidity(player.playerDeck.get(cardChoice)) == true) {
+			}
+			else if(checkCardValidity(player.playerDeck.get(cardChoice)) == true) {
+					
+
+					
+					
 				topCard = player.playerDeck.get(cardChoice);
 				player.playerDeck.remove(cardChoice);
 				
 					if(topCard.cardType == 10) {
-						System.out.println("Skipped " + player.nextPlayer.playerName + "'s turn.");
+						System.out.println("Skipped " + player.nextPlayer.playerName + "'s turn.\n");
 						if (gameDirection == 0) {
 							player = player.nextPlayer;
 							playerTurn(player.nextPlayer,0);
@@ -133,6 +151,7 @@ public class Game {
 				System.out.println("You cannot play this card. Please select a different card.");
 				playerTurn(player,0);
 				}
+				
 
 			}
 		catch (ArrayIndexOutOfBoundsException e) {
@@ -169,7 +188,7 @@ public class Game {
 		}
 	}	
 	public static void displayTopCard() {
-		System.out.println("The Top Card is a " + topCard.cardColorToString() + " " + topCard.cardTypeToString() + ".");
+		System.out.println("The Top Card is a " + topCard.cardColorToString() + " " + topCard.cardTypeToString() + ".\n");
 	}
 	
 	public static boolean checkCardValidity(Card card) {
@@ -227,7 +246,7 @@ public class Game {
 	
 	public static void cardDrawFour(Player player, int card) {
 		card = 4; 
-		System.out.println(player.playerName + " draws " + card);
+		System.out.println(player.playerName + " draws " + card + "\n");
 		drawCard(4, player.playerDeck);
 	}
 
