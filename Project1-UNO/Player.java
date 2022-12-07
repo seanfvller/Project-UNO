@@ -52,7 +52,7 @@ public class Player
 		{
 	        System.out.println((i +1) + ": " + playerDeck.get(i).cardColorToString() + " " + playerDeck.get(i).cardTypeToString());
 			}
-		System.out.println((playerDeck.size() + 1) + ": Draw Card") ;
+			System.out.println((playerDeck.size() + 1) + ": Draw Card") ;
 	
 	
 	}
