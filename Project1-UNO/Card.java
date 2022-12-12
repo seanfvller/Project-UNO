@@ -1,139 +1,173 @@
+import java.util.*;
 
 /**
- * @author Sean Fuller, Tristen Tran
- *
+ * Lead Authors(s):
+ * 
+ * @author Sean Fuller
+ * @author Tristen Tran
+ * 
+ *         Other contributors:
+ *         None
+ * 
+ *         Version/date: 1.0
+ * 
+ *         Responsibilities of class: Constructor and methods for Card class
+ * 
+ *         Card Type Explanations:
+ *         Number Card (0-9): A basic card that can be played if its number OR
+ *         color
+ *         matches that of the card on the field.
+ *         Skip Card: An action card that can be played if its color matches
+ *         that of
+ *         the card on the field.
+ *         Upon playing this card, it will skip the next player's turn.
+ *         Reverse Card: An action card that can be played if its color matches
+ *         that
+ *         of the card on the field.
+ *         Upon playing this card, it will reverse the direction of the flow of
+ *         the
+ *         game turns.
+ *         Draw Four Card: An action card that can be played regardless of the
+ *         number or color of the card on the field.
+ *         Upon playing this card, the next player must draw four cards into
+ *         their
+ *         deck.
  */
-import java.util.*;
 
 public class Card
 {
-	// Card Variables
-	int cardColor; // 0: Red, 1: Blue, 2: Yellow, 3: Green
-	int cardType; // 0-9: Number Card (0-9), 10: Skip Card, 11: Reverse Card,
-					// 12: Draw Four Card
 
 	/*
-	 * Card Type Explanations:
-	 * Number Card (0-9): A basic card that can be played if its number OR color
-	 * matches that of the card on the field.
-	 * Skip Card: An action card that can be played if its color matches that of
-	 * the card on the field.
-	 * Upon playing this card, it will skip the next player's turn.
-	 * Reverse Card: An action card that can be played if its color matches that
-	 * of the card on the field.
-	 * Upon playing this card, it will reverse the direction of the flow of the
-	 * game turns.
-	 * Draw Four Card: An action card that can be played regardless of the
-	 * number or color of the card on the field.
-	 * Upon playing this card, the next player must draw four cards into their
-	 * deck.
+	 * A Card has-a cardColor - 0: Red, 1: Blue, 2: Yellow, 3: Green
 	 */
+	public int cardColor;
+	/*
+	 * A Card has-a cardType - 0-9: Number Card (0-9), 10: Skip Card, 11:
+	 * Reverse Card,12: Draw Four Card
+	 */
+	public int cardType;
+	// Initialization of Random object for utilization by class methods
+	private Random random = new Random();
+	// Initialization of Card object for utilization by class methods
+	private Card card;
 
-	// Card Constructor
+	/**
+	 * Purpose: Class constructor, initializes cardColor and cardType as 0 (Red
+	 * 0)
+	 */
 	Card()
 	{
+
 		cardColor = 0;
 		cardType = 0;
+
 	}
 
-	// Method to create and return new Card.class object with randomized
-	// variables.
+	/**
+	 * Purpose: Creates and returns new Card object with randomized variables
+	 *
+	 * @return random Card object
+	 */
 	public Card createCard()
 	{
-		Card newCard = new Card();
-		Random random = new Random();
+
+		card = new Card();
 		cardType = random.nextInt(13);
 		cardColor = random.nextInt(4);
-		return newCard;
+
+		return card;
+
 	}
 
-	// Method to return int cardColor variable as a printable String
+	/**
+	 * Purpose: Gets the Card's color and returns it as a string
+	 * 
+	 * @return the Card's color as a string
+	 */
 	public String cardColorToString()
 	{
+
 		String cardColorString = null;
 
-		if (this.cardColor == 0)
+		switch (this.cardColor)
 		{
-			cardColorString = "Red";
-		}
-		else if (this.cardColor == 1)
-		{
-			cardColorString = "Blue";
-		}
-		else if (this.cardColor == 2)
-		{
-			cardColorString = "Yellow";
-		}
-		else if (this.cardColor == 3)
-		{
-			cardColorString = "Green";
+
+			case 0:
+				cardColorString = "Red";
+				break;
+			case 1:
+				cardColorString = "Blue";
+				break;
+			case 2:
+				cardColorString = "Yellow";
+				break;
+			case 3:
+				cardColorString = "Green";
+				break;
+
 		}
 
 		return cardColorString;
+
 	}
 
-	// Method to return int cardType variable as a printable String
+	/**
+	 * Purpose: Gets the Card's type and returns it as a string
+	 * 
+	 * @return the Card's type as a string
+	 */
 	public String cardTypeToString()
 	{
+
 		String cardTypeString = null;
 
-		if (this.cardType == 0)
+		switch (this.cardType)
 		{
-			cardTypeString = "0";
-		}
-		else if (this.cardType == 1)
-		{
-			cardTypeString = "1";
-		}
-		else if (this.cardType == 2)
-		{
-			cardTypeString = "2";
-		}
-		else if (this.cardType == 3)
-		{
-			cardTypeString = "3";
-		}
-		else if (this.cardType == 4)
-		{
-			cardTypeString = "4";
-		}
-		else if (this.cardType == 5)
-		{
-			cardTypeString = "5";
-		}
-		else if (this.cardType == 6)
-		{
-			cardTypeString = "6";
-		}
-		else if (this.cardType == 7)
-		{
-			cardTypeString = "7";
-		}
-		else if (this.cardType == 8)
-		{
-			cardTypeString = "8";
-		}
-		else if (this.cardType == 9)
-		{
-			cardTypeString = "9";
-		}
-		else if (this.cardType == 10)
-		{
-			cardTypeString = "Skip";
-		}
-		else if (this.cardType == 11)
-		{
-			cardTypeString = "Reverse";
-		}
-		else if (this.cardType == 12)
-		{
-			cardTypeString = "Draw Four";
+
+			case 0:
+				cardTypeString = "0";
+				break;
+			case 1:
+				cardTypeString = "1";
+				break;
+			case 2:
+				cardTypeString = "2";
+				break;
+			case 3:
+				cardTypeString = "3";
+				break;
+			case 4:
+				cardTypeString = "4";
+				break;
+			case 5:
+				cardTypeString = "5";
+				break;
+			case 6:
+				cardTypeString = "6";
+				break;
+			case 7:
+				cardTypeString = "7";
+				break;
+			case 8:
+				cardTypeString = "8";
+				break;
+			case 9:
+				cardTypeString = "9";
+				break;
+			case 10:
+				cardTypeString = "Skip";
+				break;
+			case 11:
+				cardTypeString = "Reverse";
+				break;
+			case 12:
+				cardTypeString = "Draw Four";
+				break;
+
 		}
 
 		return cardTypeString;
+
 	}
 
-	public static void main(String[] args)
-	{
-	}
 }

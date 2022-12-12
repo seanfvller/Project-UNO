@@ -1,61 +1,91 @@
-/**
- * 
- */
-
-/**
- * @author Sean Fuller, Tristen Tran
- *
- */
 import java.util.*;
 
-public class Player 
+/**
+ * Lead Authors(s):
+ * 
+ * @author Sean Fuller
+ * @author Tristen Tran
+ * 
+ *         Other contributors:
+ *         None
+ * 
+ *         Version/date: 1.0
+ * 
+ *         Responsibilities of class: Constructor and methods for Player class
+ */
+
+public class Player
 {
-	//Fields
-	String playerName;
-	int playerNumber; 
-	int numberOfCards = 0; // total number of cards the player has
-	Player nextPlayer;
-	Player prevPlayer;
-	ArrayList<Card> playerDeck; //array of cards object each player hass
-	
-	Scanner scnr = new Scanner (System.in);
-	
-	
-	//Constructor
+	// A Player has-a playerName
+	public String playerName;
+	// A Player has-a playerNumber
+	public int playerNumber;
+	// A Player has-a numberOfCards
+	public int numberOfCards = 0;
+	// A Player has-a nextPlayer
+	public Player nextPlayer;
+	// A Player has-a prevPlayer
+	public Player prevPlayer;
+	// A Player has-a playerDeck
+	public ArrayList<Card> playerDeck;
+
+	/**
+	 * Purpose: Class constructor that specifies the Player's playerNumber;
+	 * initializes the Player's playerName, numberOfCards, and playerDeck, then
+	 * calls setPlayerName() to set the Player's name
+	 * 
+	 * @param playerNum
+	 */
 	public Player(int playerNum)
 	{
 		playerName = "";
 		playerNumber = playerNum;
 		numberOfCards = 0;
 		playerDeck = new ArrayList<Card>();
-		setPlayerName();
 	}
-	
-	//Get Player name
-	public void setPlayerName() {
+
+	/**
+	 * Purpose: Sets the Player's playerName to a specified String
+	 */
+	public void setPlayerName()
+	{
+		Scanner scnr = new Scanner(System.in);
 		System.out.print("Enter name of player " + (playerNumber + 1) + ": ");
 		playerName = scnr.next();
 		System.out.println();
-		}
+	}
 
-	
-	//remove a card from players deck
-	public void removeCard(int index) {
-		playerDeck.remove(index); 
+	/**
+	 * Purpose: Removes a Card at a specified index from the Player's playerDeck
+	 * 
+	 * @param specified index of Card to remove
+	 */
+	public void removeCard(int index)
+	{
+		playerDeck.remove(index);
 	}
 	
-//	//displays the players hand to player at every turn
-	public void displayPlayerDeck() {
+	public Player getPlayer(int i)
+	{
 		
+		return;
+	}
+
+	/**
+	 * Purpose: Displays all of the Player's Cards from their playerDeck as
+	 * Strings
+	 */
+	public void displayPlayerDeck()
+	{
+
 		System.out.println(playerName + "'s cards");
-		for (int i = 0; i < playerDeck.size(); i++) 
+		for (int i = 0; i < playerDeck.size(); i++)
 		{
-	        System.out.println((i +1) + ": " + playerDeck.get(i).cardColorToString() + " " + playerDeck.get(i).cardTypeToString());
-			}
-			System.out.println((playerDeck.size() + 1) + ": Draw Card") ;
-	
-	
+			System.out.println(
+					(i + 1) + ": " + playerDeck.get(i).cardColorToString() + " "
+							+ playerDeck.get(i).cardTypeToString());
+		}
+		System.out.println((playerDeck.size() + 1) + ": Draw Card");
+
 	}
 }
-
-

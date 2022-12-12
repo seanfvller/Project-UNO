@@ -1,68 +1,80 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.util.*;
 
 /**
- * @author Sean Fuller, Tristen Tran
- *
+ * Lead Authors(s):
+ * 
+ * @author Sean Fuller
+ * @author Tristen Tran
+ * 
+ *         Other contributors:
+ *         None
+ * 
+ *         Version/date: 1.0
+ * 
+ *         Responsibilities of class: Constructor and methods for Game class
  */
+
 public class Game
 {
-	// Fields
-	static int numberOfPlayers;
+	// A Game has-a numberOfPlayers
+	public static int numberOfPlayers;
 	static int playerNum = 0;
 	static String playerName;
-	static Card topCard; // displays top card on discard pile
-	static int choice; // index of options (i.e. 1 - red 5)
-	static int gameDirection = 0; // variable to keep track of game direction
+	public ArrayList<ArrayList<Card>> playerDecks;
+	// A Game has-a topCard
+	static Card topCard;
+	// A Game has-a choice
+	static int choice;
+	// A Game has-a gameDirection
+	private static int gameDirection = 0;
 	static int option;
 	static Player newPlayerA, newPlayerB, newPlayerC;
 	static Scanner scnr = new Scanner(System.in);
 
-	public static void gameStart()
-	{
-
-		try
-		{
-			System.out.println(
-					"Enter '1' to start the Uno Game or enter '2' to Quit");
-
-			option = scnr.nextInt();
-
-			if (option == 1)
-			{
-				System.out.println("Please enter the amount of players: ");
-
-				numberOfPlayers = scnr.nextInt();
-
-				if (numberOfPlayers < 2 || numberOfPlayers > 8)
-				{
-					System.out.println(
-							"Error: Cannot play UNO with less than two players or more than eight players. Please try again.");
-					gameStart();
-				}
-
-				else if (numberOfPlayers >= 2 || numberOfPlayers <= 8)
-				{
-					createPlayerList();
-				}
-
-			}
-
-			else if (option == 2)
-			{
-				quitGame();
-			}
-
-		}
-		catch (InputMismatchException e)
-		{
-			System.out.println("Please enter a number!");
-			scnr.nextLine();
-
-		}
-
-	}
+//	public static void gameStart()
+//	{
+//
+//		try
+//		{
+//			System.out.println(
+//					"Enter '1' to start the Uno Game or enter '2' to Quit");
+//
+//			option = scnr.nextInt();
+//
+//			if (option == 1)
+//			{
+//				System.out.println("Please enter the amount of players: ");
+//
+//				numberOfPlayers = scnr.nextInt();
+//
+//				if (numberOfPlayers < 2 || numberOfPlayers > 8)
+//				{
+//					System.out.println(
+//							"Error: Cannot play UNO with less than two players or more than eight players. Please try again.");
+//					gameStart();
+//				}
+//
+//				else if (numberOfPlayers >= 2 || numberOfPlayers <= 8)
+//				{
+//					createPlayerList();
+//				}
+//
+//			}
+//
+//			else if (option == 2)
+//			{
+//				quitGame();
+//			}
+//
+//		}
+//		catch (InputMismatchException e)
+//		{
+//			System.out.println("Please enter a number!");
+//			scnr.nextLine();
+//
+//		}
+//
+//	}
 
 	public static void playerTurn(Player player, int choice)
 	{
@@ -154,12 +166,12 @@ public class Game
 					{
 						if (gameDirection == 1)
 						{
-							cardDrawFour(player.nextPlayer, 4);
+							cardDrawFour(player.nextPlayer);
 							playerTurn(player.nextPlayer, 0);
 						}
 						else if (gameDirection == 0)
 						{
-							cardDrawFour(player.prevPlayer, 4);
+							cardDrawFour(player.prevPlayer);
 							playerTurn(player.prevPlayer, 0);
 						}
 					}
@@ -232,12 +244,22 @@ public class Game
 		}
 	}
 
+	/**
+	 * Purpose: Displays the Game's topCard
+	 */
 	public static void displayTopCard()
 	{
 		System.out.println("The Top Card is a " + topCard.cardColorToString()
 				+ " " + topCard.cardTypeToString() + ".\n");
 	}
 
+	/**
+	 * Purpose: Checks a Card's playability by comparing it with the Game's
+	 * topCard
+	 * 
+	 * @param card specified Card to check
+	 * @return boolean value indicating if Card can be played
+	 */
 	public static boolean checkCardValidity(Card card)
 	{
 		if (card.cardType == 12 || card.cardColor == 4
@@ -252,19 +274,46 @@ public class Game
 		}
 	}
 
-	public static void createPlayerList()
+	/**
+	 * Purpose: Gets the Game's number of players
+	 * 
+	 * @return the Game's number of players
+	 */
+	public int getPlayerNum()
+	{
+		return playerNum;
+	}
+
+	/**
+	 * Purpose: Sets the Game's number of players to a specified amount
+	 * 
+	 * @param userNum specified amount of players
+	 */
+	public void setPlayerNum(int userNum)
+	{
+		playerNum = userNum;
+	}
+
+	
+	
+	/**
+	 * Purpose: Creates a Doubly Linked List of Players based on Game's
+	 * numberOfPlayers,
+	 * and draws 7 Cards to each Player's playerDeck
+	 */
+	public void createPlayerList()
 	{
 		newPlayerA = new Player(0);
-		setCardForPlayer(newPlayerA);
+		drawCard(7, newPlayerA.playerDeck);
 		newPlayerB = new Player(1);
-		setCardForPlayer(newPlayerB);
+		drawCard(7, newPlayerB.playerDeck);
 		newPlayerA.nextPlayer = newPlayerB;
 		newPlayerB.prevPlayer = newPlayerA;
 
 		for (int i = 2; i < numberOfPlayers; i++)
 		{
 			newPlayerC = new Player(i);
-			setCardForPlayer(newPlayerC);
+			drawCard(7, newPlayerC.playerDeck);
 			newPlayerB.nextPlayer = newPlayerC;
 			newPlayerC.prevPlayer = newPlayerB;
 			newPlayerB = newPlayerC;
@@ -273,8 +322,12 @@ public class Game
 		newPlayerA.prevPlayer = newPlayerB;
 		newPlayerB.nextPlayer = newPlayerA;
 	}
-
-	// create new card to for starting card
+	
+	/**
+	 * Purpose: Creates a random Card and returns it as the Game's topCard
+	 * 
+	 * @return random topCard
+	 */
 	public static Card createTopCard()
 	{
 		topCard = new Card();
@@ -282,17 +335,13 @@ public class Game
 		return topCard;
 	}
 
-	// gives 7 cards to each player in the beginning
-	public static void setCardForPlayer(Player player)
-	{
-		for (int i = 0; i < 7; i++)
-		{
-			Card newCard = new Card();
-			newCard.createCard();
-			player.playerDeck.add(newCard);
-		}
-	}
-
+	/**
+	 * Purpose: Draws a specified amount of random Cards to a specified
+	 * playerDeck
+	 * 
+	 * @param cards      specified amount of Cards to draw
+	 * @param playerDeck specified playerDeck to add cards to
+	 */
 	public static void drawCard(int cards, ArrayList<Card> playerDeck)
 	{
 		for (int i = 0; i < cards; i++)
@@ -303,24 +352,37 @@ public class Game
 		}
 	}
 
-	public static void cardDrawFour(Player player, int card)
+	/**
+	 * Purpose: Causes the specified Player to draw 4 random Cards to their
+	 * playerDeck
+	 * 
+	 * @param player specified player
+	 */
+	public static void cardDrawFour(Player player)
 	{
-		card = 4;
-		System.out.println(player.playerName + " draws " + card + "\n");
+		System.out.println(player.playerName + " draws 4 cards!");
 		drawCard(4, player.playerDeck);
 	}
 
+	/**
+	 * Purpose: Exits the application
+	 */
 	public static void quitGame()
 	{
 		System.out.print("Thank you for playing Uno. Goodbye!");
 		System.exit(0);
 	}
 
+	/**
+	 * Purpose: Main method of Game class
+	 * 
+	 * @param args the command line arguments
+	 */
 	public static void main(String[] args)
 	{
 		System.out.println("Welcome to Uno!");
-		gameStart();
+//		gameStart();
 		createTopCard();
-		playerTurn(newPlayerA, 0);
+//		playerTurn(newPlayerA, 0);
 	}
 }
