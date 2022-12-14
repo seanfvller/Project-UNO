@@ -47,12 +47,22 @@ public class Player
 	/**
 	 * Purpose: Sets the Player's playerName to a specified String
 	 */
-	public void setPlayerName()
+	public void setPlayerName(String userName)
 	{
-		Scanner scnr = new Scanner(System.in);
-		System.out.print("Enter name of player " + (playerNumber + 1) + ": ");
-		playerName = scnr.next();
-		System.out.println();
+//		Scanner scnr = new Scanner(System.in);
+//		System.out.print("Enter name of player " + (playerNumber + 1) + ": ");
+//		playerName = scnr.next();
+//		System.out.println();
+		this.playerName = userName;
+		
+	}
+	
+	/**
+	 * Purpose: Sets the Player's playerNumber to a specified integer
+	 */
+	public void setPlayerNumber(int userNumber)
+	{
+		this.playerNumber = userNumber;
 	}
 
 	/**
@@ -65,11 +75,11 @@ public class Player
 		playerDeck.remove(index);
 	}
 	
-	public Player getPlayer(int i)
-	{
-		
-		return;
-	}
+//	public Player getPlayer(int i)
+//	{
+//		
+//		return;
+//	}
 
 	/**
 	 * Purpose: Displays all of the Player's Cards from their playerDeck as

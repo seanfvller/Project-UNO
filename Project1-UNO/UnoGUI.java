@@ -110,7 +110,7 @@ public class UnoGUI extends JFrame
 	public void createGameInitializer()
 	{
 		UnoGUI unoView = this;
-		JDialog gameInitializer = new JDialog(unoView, "Starting game...");
+		JDialog gameInitializer = new JDialog(unoView, "Initializing game...");
 		gameInitializer.setSize(GAME_INITIALIZER_SIZE);
 		gameInitializer.setLocationRelativeTo(unoView);
 		gameInitializer.addWindowListener(new WindowAdapter()
@@ -130,25 +130,36 @@ public class UnoGUI extends JFrame
 		
 		class PlayerNameListener implements ActionListener
 		{
-			int playerNum = 1;
+			int playerNumber = 1;
 			
 			public void actionPerformed(ActionEvent e)
 			{
-				if (playerNum < UnoModel.getPlayerNum())
+				if (playerNumber < UnoModel.getNumberOfPlayers())
 				{
-				Player newPlayer = new Player(playerNum);
-				playerNum = playerNum + 1;
-				System.out.println("Player " + playerNum + "'s name has been set.");
-				textField.setBorder(BorderFactory.createTitledBorder("Please enter name for Player " + playerNum + ": "));
+				Player newPlayer = new Player(playerNumber);
+				newPlayer.setPlayerName(textField.getText());
+				newPlayer.setPlayerNumber(playerNumber);
+				UnoModel.addPlayer(newPlayer, playerNumber);
+				System.out.println("Player " + playerNumber + "'s name has been set.");
+				playerNumber = playerNumber + 1;
+				textField.setText("");
+				textField.setBorder(BorderFactory.createTitledBorder("Please enter name for Player " + playerNumber + ": "));
 				}
 				else
 				{
+				Player newPlayer = new Player(playerNumber);
+				newPlayer.setPlayerName(textField.getText());
+				newPlayer.setPlayerNumber(playerNumber);
+				UnoModel.addPlayer(newPlayer, playerNumber);
+				System.out.println("Player " + playerNumber + "'s name has been set.");
+				UnoModel.linkPlayerList();
 				System.out.println("All players' names have been set.");
+				gameInitializer.dispose();
 				}
 			}
 		}
 		
-		class PlayerNumListener implements ActionListener 
+		class numberOfPlayersListener implements ActionListener 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -166,7 +177,8 @@ public class UnoGUI extends JFrame
 				else
 				{
 					System.out.println("Set the number of players to " + numberOfPlayers + ".");
-					UnoModel.setPlayerNum(numberOfPlayers);
+					UnoModel.setNumberOfPlayers(numberOfPlayers);
+					UnoModel.createPlayerList();
 					textField.setBorder(BorderFactory.createTitledBorder("Please enter name for Player 1: "));
 					textField.setText("");
 					button.removeActionListener(this);
@@ -178,8 +190,9 @@ public class UnoGUI extends JFrame
 				}
 			}
 		}
+		
 			
-		button.addActionListener(new PlayerNumListener());
+		button.addActionListener(new numberOfPlayersListener());
 		
 		
 		

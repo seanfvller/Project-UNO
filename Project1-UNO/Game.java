@@ -21,6 +21,7 @@ public class Game
 	static int playerNum = 0;
 	static String playerName;
 	public ArrayList<ArrayList<Card>> playerDecks;
+	public Player[] playerList;
 	// A Game has-a topCard
 	static Card topCard;
 	// A Game has-a choice
@@ -29,52 +30,54 @@ public class Game
 	private static int gameDirection = 0;
 	static int option;
 	static Player newPlayerA, newPlayerB, newPlayerC;
+	Player player;
 	static Scanner scnr = new Scanner(System.in);
 
-//	public static void gameStart()
-//	{
-//
-//		try
-//		{
-//			System.out.println(
-//					"Enter '1' to start the Uno Game or enter '2' to Quit");
-//
-//			option = scnr.nextInt();
-//
-//			if (option == 1)
-//			{
-//				System.out.println("Please enter the amount of players: ");
-//
-//				numberOfPlayers = scnr.nextInt();
-//
-//				if (numberOfPlayers < 2 || numberOfPlayers > 8)
-//				{
-//					System.out.println(
-//							"Error: Cannot play UNO with less than two players or more than eight players. Please try again.");
-//					gameStart();
-//				}
-//
-//				else if (numberOfPlayers >= 2 || numberOfPlayers <= 8)
-//				{
-//					createPlayerList();
-//				}
-//
-//			}
-//
-//			else if (option == 2)
-//			{
-//				quitGame();
-//			}
-//
-//		}
-//		catch (InputMismatchException e)
-//		{
-//			System.out.println("Please enter a number!");
-//			scnr.nextLine();
-//
-//		}
-//
-//	}
+	// public static void gameStart()
+	// {
+	//
+	// try
+	// {
+	// System.out.println(
+	// "Enter '1' to start the Uno Game or enter '2' to Quit");
+	//
+	// option = scnr.nextInt();
+	//
+	// if (option == 1)
+	// {
+	// System.out.println("Please enter the amount of players: ");
+	//
+	// numberOfPlayers = scnr.nextInt();
+	//
+	// if (numberOfPlayers < 2 || numberOfPlayers > 8)
+	// {
+	// System.out.println(
+	// "Error: Cannot play UNO with less than two players or more than eight
+	// players. Please try again.");
+	// gameStart();
+	// }
+	//
+	// else if (numberOfPlayers >= 2 || numberOfPlayers <= 8)
+	// {
+	// createPlayerList();
+	// }
+	//
+	// }
+	//
+	// else if (option == 2)
+	// {
+	// quitGame();
+	// }
+	//
+	// }
+	// catch (InputMismatchException e)
+	// {
+	// System.out.println("Please enter a number!");
+	// scnr.nextLine();
+	//
+	// }
+	//
+	// }
 
 	public static void playerTurn(Player player, int choice)
 	{
@@ -279,9 +282,9 @@ public class Game
 	 * 
 	 * @return the Game's number of players
 	 */
-	public int getPlayerNum()
+	public int getNumberOfPlayers()
 	{
-		return playerNum;
+		return numberOfPlayers;
 	}
 
 	/**
@@ -289,40 +292,48 @@ public class Game
 	 * 
 	 * @param userNum specified amount of players
 	 */
-	public void setPlayerNum(int userNum)
+	public void setNumberOfPlayers(int userNumberOfPlayers)
 	{
-		playerNum = userNum;
+		numberOfPlayers = userNumberOfPlayers;
 	}
 
-	
-	
 	/**
-	 * Purpose: Creates a Doubly Linked List of Players based on Game's
-	 * numberOfPlayers,
-	 * and draws 7 Cards to each Player's playerDeck
+	 * Purpose: Constructs an Array of Players with a length specified by the
+	 * Game's numberOfPlayers
 	 */
 	public void createPlayerList()
 	{
-		newPlayerA = new Player(0);
-		drawCard(7, newPlayerA.playerDeck);
-		newPlayerB = new Player(1);
-		drawCard(7, newPlayerB.playerDeck);
-		newPlayerA.nextPlayer = newPlayerB;
-		newPlayerB.prevPlayer = newPlayerA;
-
-		for (int i = 2; i < numberOfPlayers; i++)
-		{
-			newPlayerC = new Player(i);
-			drawCard(7, newPlayerC.playerDeck);
-			newPlayerB.nextPlayer = newPlayerC;
-			newPlayerC.prevPlayer = newPlayerB;
-			newPlayerB = newPlayerC;
-		}
-
-		newPlayerA.prevPlayer = newPlayerB;
-		newPlayerB.nextPlayer = newPlayerA;
+		playerList = new Player[numberOfPlayers];
 	}
-	
+
+	/**
+	 * Purpose: Adds a Player to the playerList
+	 * @param newPlayer
+	 * @param playerNumber
+	 */
+	public void addPlayer(Player newPlayer, int playerNumber)
+	{
+		playerList[playerNumber - 1] = newPlayer;
+	}
+
+	public void linkPlayerList()
+	{
+		for (int i = 0; i < playerList.length - 1; i++)
+		{
+			if (playerList[i + 1] != null)
+			{
+			playerList[i].nextPlayer = playerList[i + 1];
+			System.out.println("Player " + (i + 1) + "'s next player is Player " + (i + 2));
+			playerList[i + 1].prevPlayer = playerList[i];
+			System.out.println("Player " + (i + 2) + "'s previous player is Player " + (i + 1));
+			}
+		}
+		playerList[0].prevPlayer = playerList[playerList.length - 1];
+		System.out.println("Player 1's previous player is Player " + (playerList.length));
+		playerList[playerList.length - 1].nextPlayer = playerList[0];
+		System.out.println("Player " + (playerList.length) + "'s next player is Player 1");
+	}
+
 	/**
 	 * Purpose: Creates a random Card and returns it as the Game's topCard
 	 * 
@@ -381,8 +392,8 @@ public class Game
 	public static void main(String[] args)
 	{
 		System.out.println("Welcome to Uno!");
-//		gameStart();
+		// gameStart();
 		createTopCard();
-//		playerTurn(newPlayerA, 0);
+		// playerTurn(newPlayerA, 0);
 	}
 }
