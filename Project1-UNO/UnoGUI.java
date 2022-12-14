@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 /**
@@ -25,23 +25,25 @@ public class UnoGUI extends JFrame
 	// Component sizes
 	public final Dimension PRIMARY_WINDOW_SIZE = new Dimension(1200, 900);
 	public final Dimension SECONDARY_WINDOW_SIZE = new Dimension(300, 150);
-	public final Dimension BUTTON_SIZE = new Dimension(100,120);
+	public final Dimension BUTTON_SIZE = new Dimension(100, 120);
 	// Initialization of Game for utilization by class methods
 	private Game unoModel;
 	// Initialization of unoGuI for utilization by class methods
 	private static UnoGUI unoView;
 	// fields for the user interface
-	private CardButton topCardButton;
+	private TitledBorder cardPanelBorder;
 	
+	private CardButton topCardButton;
+
 	private JButton drawButton;
 	private JButton unoButton;
-	
+
 	private JDialog gameInitializerWindow;
 	private JDialog victoryWindow;
-	
+
 	private JLabel cardPanelPlayerName;
-	public  JLabel gameStatusTracker;
-	
+	public JLabel gameStatusTracker;
+
 	public JLabel playerName;
 	public JPanel actionPanel;
 	public JPanel cardPanel;
@@ -49,9 +51,8 @@ public class UnoGUI extends JFrame
 	public JPanel playerPanel;
 	public JPanel topCardPanel;
 	public JPanel windowPanel;
-	
-	private static JPanel[] cardPanelArray;
 
+	private static JPanel[] cardPanelArray;
 
 	/**
 	 * Purpose: Class constructor
@@ -71,11 +72,11 @@ public class UnoGUI extends JFrame
 		windowPanel.setSize(PRIMARY_WINDOW_SIZE);
 		windowPanel.setLayout(new BoxLayout(windowPanel, BoxLayout.Y_AXIS));
 		windowPanel.setBackground(Color.DARK_GRAY);
-		
+
 		add(windowPanel);
 
 		createGameInitializerWindow();
-		
+
 		setEnabled(false);
 		setVisible(true);
 
@@ -134,7 +135,9 @@ public class UnoGUI extends JFrame
 						unoModel.addPlayer(textField.getText(), playerNumber);
 						playerNumber = playerNumber + 1;
 						textField.setText("");
-						textField.setBorder(BorderFactory.createTitledBorder("Please enter name for Player " + playerNumber + ": "));
+						textField.setBorder(BorderFactory.createTitledBorder(
+								"Please enter name for Player " + playerNumber
+										+ ": "));
 					}
 				}
 				else
@@ -211,16 +214,17 @@ public class UnoGUI extends JFrame
 		gameInitializerWindow.setVisible(true);
 
 	}
-	
+
 	public void createVictoryWindow()
 	{
-		victoryWindow = new JDialog(unoView,"Game Over");
+		victoryWindow = new JDialog(unoView, "Game Over");
 		victoryWindow.setSize(SECONDARY_WINDOW_SIZE);
 		victoryWindow.setResizable(false);
 		victoryWindow.setLocationRelativeTo(unoView);
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-		JLabel label = new JLabel(unoModel.getCurrentPlayer().playerName + " has achieved victory!");
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		JLabel label = new JLabel(unoModel.getCurrentPlayer().playerName
+				+ " has achieved victory!");
 		JButton button = new JButton("Close");
 
 		victoryWindow.addWindowListener(new WindowAdapter()
@@ -239,7 +243,7 @@ public class UnoGUI extends JFrame
 				System.exit(0);
 			}
 		});
-		
+
 		panel.add(Box.createVerticalStrut(5));
 		panel.add(label);
 		panel.add(Box.createVerticalStrut(5));
@@ -247,22 +251,21 @@ public class UnoGUI extends JFrame
 		panel.add(Box.createVerticalStrut(5));
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		button.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		victoryWindow.add(panel);
 		victoryWindow.setVisible(true);
 	}
-	
+
 	public void createTopCardPanel()
 	{
 		topCardPanel = new JPanel();
 		topCardPanel.setBackground(Color.DARK_GRAY);
 		topCardButton = new CardButton(unoModel.getTopCard());
-		setButtonLayout(unoModel.getTopCard(),topCardButton);
+		setButtonLayout(unoModel.getTopCard(), topCardButton);
 		topCardButton.removeMouseListener(topCardButton.getMouseListeners()[0]);
 		topCardPanel.add(topCardButton);
 		windowPanel.add(topCardPanel);
 	}
-	
 
 	/**
 	 * Purpose: Creates and adds a label that communicates game information to
@@ -271,40 +274,41 @@ public class UnoGUI extends JFrame
 	 */
 	public void createGameStatusTracker()
 	{
-//		gameStatusTrackerPanel
+		// gameStatusTrackerPanel
 		gameStatusTracker = new JLabel("Welcome to UNO!");
 		gameStatusTracker.setFont(new Font("Helvetica", Font.BOLD, 20));
 		gameStatusTracker.setForeground(Color.WHITE);
 		gameStatusTracker.setBackground(Color.DARK_GRAY);
 		windowPanel.add(gameStatusTracker);
 	}
-	
+
 	public void createActionPanel()
 	{
 		actionPanel = new JPanel();
-		actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER,30,0));
+		actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 		actionPanel.setBackground(Color.DARK_GRAY);
-		
+
 		drawButton = new JButton("Draw");
-		drawButton.setPreferredSize(new Dimension(175,75));
+		drawButton.setPreferredSize(new Dimension(175, 75));
 		drawButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		drawButton.setText("Draw");
 		drawButton.setFont(new Font("Helvetica", Font.BOLD, 18));
-		
+
 		class drawButtonListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				unoModel.drawCard(1, unoModel.getCurrentPlayer());
-				gameStatusTracker.setText("You drew a " + unoModel.getCardDrawn().getCardTypeAndColor());
+				gameStatusTracker.setText("You drew a "
+						+ unoModel.getCardDrawn().getCardTypeAndColor());
 				updateGUI();
 			}
 		}
 
 		drawButton.addActionListener(new drawButtonListener());
-		
+
 		unoButton = new JButton("UNO!");
-		unoButton.setPreferredSize(new Dimension(175,75));
+		unoButton.setPreferredSize(new Dimension(175, 75));
 		unoButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		unoButton.setText("UNO!");
 		unoButton.setFont(new Font("Helvetica", Font.BOLD, 18));
@@ -315,11 +319,14 @@ public class UnoGUI extends JFrame
 			{
 				if (unoModel.getCurrentPlayer().playerDeck.size() != 1)
 				{
-					gameStatusTracker.setText("You can only call UNO! when there is 1 card left in your deck.");
+					gameStatusTracker.setText(
+							"You can only call UNO! when there is 1 card left in your deck.");
 				}
-				else if (unoModel.checkCardValidity(unoModel.getCurrentPlayer().playerDeck.get(0)) != true)
+				else if (unoModel.checkCardValidity(
+						unoModel.getCurrentPlayer().playerDeck.get(0)) != true)
 				{
-					gameStatusTracker.setText("Your can only call UNO! if your final card is playable.");
+					gameStatusTracker.setText(
+							"Your can only call UNO! if your final card is playable.");
 				}
 				else
 				{
@@ -329,14 +336,14 @@ public class UnoGUI extends JFrame
 				}
 			}
 		}
-		
+
 		unoButton.addActionListener(new unoButtonListener());
-		
+
 		actionPanel.add(drawButton);
 		actionPanel.add(unoButton);
-		
+
 		actionPanel.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		windowPanel.add(actionPanel);
 	}
 
@@ -347,54 +354,40 @@ public class UnoGUI extends JFrame
 	public void createPlayerPanel()
 	{
 		cardPanelArray = new JPanel[unoModel.getNumberOfPlayers()];
-		
-		playerPanel = new JPanel();
-		playerPanel.setLayout(new BoxLayout(playerPanel,BoxLayout.Y_AXIS));
-		playerPanel.setBackground(Color.DARK_GRAY);
 
-		for (int i = 0; i < unoModel.getNumberOfPlayers(); i++)
-		{
-			cardPanel = new JPanel();
-			cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
-			cardPanel.setBackground(Color.DARK_GRAY);
-			cardPanel.setForeground(Color.WHITE);
-			cardPanel.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(EtchedBorder.LOWERED), unoModel.getPlayer(i + 1).playerName, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", Font.BOLD, 30), Color.WHITE));
-			for (int j = 0; j < unoModel.getPlayer(i + 1).playerDeck.size(); j++)
+		playerPanel = new JPanel();
+		playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+		playerPanel.setBackground(Color.DARK_GRAY);
+		cardPanel = new JPanel();
+		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
+		cardPanel.setBackground(Color.DARK_GRAY);
+		cardPanel.setForeground(Color.WHITE);
+		cardPanelBorder = new TitledBorder(new LineBorder(Color.BLACK,3), "", TitledBorder.DEFAULT_JUSTIFICATION,TitledBorder.DEFAULT_POSITION, new Font("Helvetica", Font.BOLD, 20), Color.WHITE);
+		
+		cardPanelBorder.setTitle(unoModel.getPlayer(1).playerName);
+		cardPanel.setBorder(cardPanelBorder);
+			for (int i = 0; i < unoModel.getPlayer(1).playerDeck.size(); i++)
 			{
-				CardButton cardButton = new CardButton(unoModel.getPlayer(i + 1).playerDeck.get(j));
+				CardButton cardButton = new CardButton(unoModel.getPlayer(1).playerDeck.get(i));
 				cardButton.addMouseListener(new CardButtonListener(cardButton, unoModel, unoView));
 				cardPanel.add(cardButton);
-				setButtonLayout(unoModel.getPlayer(i + 1).playerDeck.get(j), cardButton);
-			}
-			cardPanelArray[i] = cardPanel;
-			playerPanel.add(cardPanel);
-		}
+				setButtonLayout(unoModel.getPlayer(i + 1).playerDeck.get(i),cardButton);
+			}	
+		playerPanel.add(cardPanel);
 		
-		for (int i = 1; i < cardPanelArray.length; i++)
+		for (int i = 1; i < unoModel.getNumberOfPlayers(); i++)
 		{
 			
-			  for (int j = 0; j < cardPanelArray[i].getComponents().length; j++)
-			  {
-				CardButton temp = (CardButton) cardPanelArray[i].getComponents()[j];
-				temp.setBackground(Color.GRAY);
-				temp.setFont(new Font("Impact", Font.BOLD, 30));
-				temp.setText("UNO");
-				temp.removeMouseListener(temp.getMouseListeners()[1]);
-				temp.removeMouseListener(temp.getMouseListeners()[0]);
-			  }
 		}
-		
+
 		JScrollPane scrollablePlayerPanel = new JScrollPane(playerPanel);
 		scrollablePlayerPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollablePlayerPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
 		scrollablePlayerPanel.setAlignmentX(CENTER_ALIGNMENT);
 		windowPanel.add(scrollablePlayerPanel);
 
 	}
-	
-	
-	
+
 	/**
 	 * Sets the background color of the Jbutton with the corresponding card
 	 * color
@@ -410,41 +403,36 @@ public class UnoGUI extends JFrame
 		cardButton.setPreferredSize(BUTTON_SIZE);
 		cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 6));
 		cardButton.setForeground(Color.WHITE);
-		
-		switch(card.cardType)
+
+		switch (card.cardType)
 		{
-			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12 -> 
+			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12 ->
 			{
 				cardButton.setText(card.cardTypeToString());
 				cardButton.setFont(new Font("Impact", Font.BOLD, 50));
 			}
-			
+
 			case 10, 11 ->
 			{
 				cardButton.setText(card.cardTypeToString());
 				cardButton.setFont(new Font("Impact", Font.PLAIN, 20));
 			}
 		}
-		
+
 		switch (card.cardColor)
 		{
-			case 0 ->
-			cardButton.setBackground(Color.RED);
-			
-			case 1 ->
-			cardButton.setBackground(Color.BLUE);
-			
-			case 2 ->
-			cardButton.setBackground(Color.YELLOW);
-			
-			case 3 ->
-			cardButton.setBackground(Color.GREEN);
-			
-			case 4 ->
-			cardButton.setBackground(Color.BLACK);
+			case 0 -> cardButton.setBackground(Color.RED);
+
+			case 1 -> cardButton.setBackground(Color.BLUE);
+
+			case 2 -> cardButton.setBackground(Color.YELLOW);
+
+			case 3 -> cardButton.setBackground(Color.GREEN);
+
+			case 4 -> cardButton.setBackground(Color.BLACK);
 		}
 	}
-	
+
 	public void initializeGUI()
 	{
 		windowPanel.add(Box.createVerticalStrut(20));
@@ -455,12 +443,12 @@ public class UnoGUI extends JFrame
 		createActionPanel();
 		windowPanel.add(Box.createVerticalStrut(20));
 		createPlayerPanel();
-		
+
 		gameStatusTracker.setAlignmentX(CENTER_ALIGNMENT);
 		topCardPanel.setAlignmentX(CENTER_ALIGNMENT);
 		actionPanel.setAlignmentX(CENTER_ALIGNMENT);
 		playerPanel.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		gameStatusTracker.revalidate();
 		gameStatusTracker.repaint();
 		topCardPanel.revalidate();
@@ -468,8 +456,6 @@ public class UnoGUI extends JFrame
 		playerPanel.revalidate();
 		playerPanel.repaint();
 	}
-	
-
 
 	public void updateGUI()
 	{
@@ -481,70 +467,24 @@ public class UnoGUI extends JFrame
 		windowPanel.revalidate();
 		windowPanel.repaint();
 	}
-	
+
 	public void updatePlayerPanel()
 	{
 		playerPanel.removeAll();
-		cardPanel = cardPanelArray[unoModel.getCurrentPlayer().playerNumber - 1];
-		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
-		cardPanel.setBackground(Color.DARK_GRAY);
-		cardPanel.setForeground(Color.WHITE);
-		cardPanel.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(EtchedBorder.LOWERED), unoModel.getCurrentPlayer().playerName, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", Font.BOLD, 30), Color.WHITE));
-		for (int i = 0; i < unoModel.getCurrentPlayer().playerDeck.size(); i++)
-		{
-			CardButton cardButton = new CardButton(unoModel.getCurrentPlayer().playerDeck.get(i));
-			cardButton.addMouseListener(new CardButtonListener(cardButton, unoModel, unoView));
-			cardPanel.add(cardButton);
-			setButtonLayout(unoModel.getCurrentPlayer().playerDeck.get(i), cardButton);
-		}
-		playerPanel.add(cardPanel);
-		
-		Player tempCurrentPlayer = unoModel.getCurrentPlayer();
-		Player tempPlayer = tempCurrentPlayer.nextPlayer;
-		
-		while (tempPlayer.nextPlayer != tempCurrentPlayer)
-		{
-			cardPanel = cardPanelArray[tempPlayer.playerNumber - 1];
-			cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
-			cardPanel.setBackground(Color.DARK_GRAY);
-			cardPanel.setForeground(Color.WHITE);
-			cardPanel.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(EtchedBorder.LOWERED), unoModel.getCurrentPlayer().playerName, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", Font.BOLD, 30), Color.WHITE));
-			for (int j = 0; j < tempPlayer.playerDeck.size(); j++)
-			{
-				CardButton cardButton = new CardButton(tempPlayer.playerDeck.get(j));
-				cardButton.addMouseListener(new CardButtonListener(cardButton, unoModel, unoView));
-				cardPanel.add(cardButton);
-				setButtonLayout(tempPlayer.playerDeck.get(j), cardButton);
-			}
-		}
-		cardPanel = cardPanelArray[tempPlayer.playerNumber - 1];
-		cardPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 20));
-		cardPanel.setBackground(Color.DARK_GRAY);
-		cardPanel.setForeground(Color.WHITE);
-		cardPanel.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(EtchedBorder.LOWERED), unoModel.getCurrentPlayer().playerName, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Helvetica", Font.BOLD, 30), Color.WHITE));
-		for (int j = 0; j < tempPlayer.playerDeck.size(); j++)
-		{
-			CardButton cardButton = new CardButton(tempPlayer.playerDeck.get(j));
-			cardButton.addMouseListener(new CardButtonListener(cardButton, unoModel, unoView));
-			cardPanel.add(cardButton);
-			setButtonLayout(tempPlayer.playerDeck.get(j), cardButton);
-		}
-		
-		
 		playerPanel.revalidate();
 		playerPanel.repaint();
 	}
-	
+
 	public void updateTopCardPanel()
 	{
 		topCardPanel.removeAll();
 		topCardButton = new CardButton(unoModel.getTopCard());
-		setButtonLayout(unoModel.getTopCard(),topCardButton);
+		setButtonLayout(unoModel.getTopCard(), topCardButton);
 		topCardButton.setEnabled(false);
 		topCardPanel.add(topCardButton);
 		topCardPanel.revalidate();
 		topCardPanel.repaint();
-		
+
 	}
 
 	public static void main(String[] args)
