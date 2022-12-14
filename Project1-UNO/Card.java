@@ -38,18 +38,18 @@ public class Card
 {
 
 	/*
-	 * A Card has-a cardColor - 0: Red, 1: Blue, 2: Yellow, 3: Green
+	 * A Card has-a cardColor - 0: Red, 1: Blue, 2: Yellow, 3: Green, 4: Black
 	 */
 	public int cardColor;
 	/*
 	 * A Card has-a cardType - 0-9: Number Card (0-9), 10: Skip Card, 11:
-	 * Reverse Card,12: Draw Four Card
+	 * Reverse Card, 12: Draw Four Card
 	 */
 	public int cardType;
+	// A Card has-an owner
+	public Player cardOwner;
 	// Initialization of Random object for utilization by class methods
 	private Random random = new Random();
-	// Initialization of Card object for utilization by class methods
-	private Card card;
 
 	/**
 	 * Purpose: Class constructor, initializes cardColor and cardType as 0 (Red
@@ -57,10 +57,17 @@ public class Card
 	 */
 	Card()
 	{
-
+		cardOwner = null;
 		cardColor = 0;
 		cardType = 0;
 
+	}
+	
+	Card(Player owner, int color, int type)
+	{
+		cardOwner = owner;
+		cardColor = color;
+		cardType = type;
 	}
 
 	/**
@@ -71,14 +78,38 @@ public class Card
 	public Card createCard()
 	{
 
-		card = new Card();
-		cardType = random.nextInt(13);
-		cardColor = random.nextInt(4);
+		Card newCard = new Card();
+		int cardTypeWeightedChance = random.nextInt(101);
+		
+		if (cardTypeWeightedChance < 86)
+		{
+			newCard.cardType = random.nextInt(10) ;
+		}
+		else
+		{
+			newCard.cardType = random.nextInt(3) + 10;
+		}
+		
+		switch (newCard.cardType)
+		{
+			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ->
+			newCard.cardColor = random.nextInt(4);
 
-		return card;
+			
+			case 12 ->
+			newCard.cardColor = 4;
+
+		}
+
+		return newCard;
 
 	}
 
+	public String getCardTypeAndColor()
+	{
+		return (cardColorToString() + " " + cardTypeToString());
+	}
+	
 	/**
 	 * Purpose: Gets the Card's color and returns it as a string
 	 * 
@@ -94,16 +125,19 @@ public class Card
 
 			case 0:
 				cardColorString = "Red";
-				break;
+				return cardColorString;
 			case 1:
 				cardColorString = "Blue";
-				break;
+				return cardColorString;
 			case 2:
 				cardColorString = "Yellow";
-				break;
+				return cardColorString;
 			case 3:
 				cardColorString = "Green";
-				break;
+				return cardColorString;
+			case 4:
+				cardColorString = "Black";
+				return cardColorString;
 
 		}
 
@@ -126,43 +160,43 @@ public class Card
 
 			case 0:
 				cardTypeString = "0";
-				break;
+				return cardTypeString;
 			case 1:
 				cardTypeString = "1";
-				break;
+				return cardTypeString;
 			case 2:
 				cardTypeString = "2";
-				break;
+				return cardTypeString;
 			case 3:
 				cardTypeString = "3";
-				break;
+				return cardTypeString;
 			case 4:
 				cardTypeString = "4";
-				break;
+				return cardTypeString;
 			case 5:
 				cardTypeString = "5";
-				break;
+				return cardTypeString;
 			case 6:
 				cardTypeString = "6";
-				break;
+				return cardTypeString;
 			case 7:
 				cardTypeString = "7";
-				break;
+				return cardTypeString;
 			case 8:
 				cardTypeString = "8";
-				break;
+				return cardTypeString;
 			case 9:
 				cardTypeString = "9";
-				break;
+				return cardTypeString;
 			case 10:
 				cardTypeString = "Skip";
-				break;
+				return cardTypeString;
 			case 11:
 				cardTypeString = "Reverse";
-				break;
+				return cardTypeString;
 			case 12:
-				cardTypeString = "Draw Four";
-				break;
+				cardTypeString = "4+";
+				return cardTypeString;
 
 		}
 

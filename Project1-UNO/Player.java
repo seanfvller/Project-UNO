@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Lead Authors(s):
@@ -20,8 +20,6 @@ public class Player
 	public String playerName;
 	// A Player has-a playerNumber
 	public int playerNumber;
-	// A Player has-a numberOfCards
-	public int numberOfCards = 0;
 	// A Player has-a nextPlayer
 	public Player nextPlayer;
 	// A Player has-a prevPlayer
@@ -36,11 +34,10 @@ public class Player
 	 * 
 	 * @param playerNum
 	 */
-	public Player(int playerNum)
+	public Player(String userName, int userNum)
 	{
-		playerName = "";
-		playerNumber = playerNum;
-		numberOfCards = 0;
+		playerName = userName;
+		playerNumber = userNum;
 		playerDeck = new ArrayList<Card>();
 	}
 
@@ -49,14 +46,9 @@ public class Player
 	 */
 	public void setPlayerName(String userName)
 	{
-//		Scanner scnr = new Scanner(System.in);
-//		System.out.print("Enter name of player " + (playerNumber + 1) + ": ");
-//		playerName = scnr.next();
-//		System.out.println();
 		this.playerName = userName;
-		
 	}
-	
+
 	/**
 	 * Purpose: Sets the Player's playerNumber to a specified integer
 	 */
@@ -72,30 +64,7 @@ public class Player
 	 */
 	public void removeCard(int index)
 	{
-		playerDeck.remove(index);
+		this.playerDeck.remove(index);
 	}
-	
-//	public Player getPlayer(int i)
-//	{
-//		
-//		return;
-//	}
 
-	/**
-	 * Purpose: Displays all of the Player's Cards from their playerDeck as
-	 * Strings
-	 */
-	public void displayPlayerDeck()
-	{
-
-		System.out.println(playerName + "'s cards");
-		for (int i = 0; i < playerDeck.size(); i++)
-		{
-			System.out.println(
-					(i + 1) + ": " + playerDeck.get(i).cardColorToString() + " "
-							+ playerDeck.get(i).cardTypeToString());
-		}
-		System.out.println((playerDeck.size() + 1) + ": Draw Card");
-
-	}
 }
