@@ -104,7 +104,7 @@ public class CardButtonListener implements MouseListener
 					{
 						
 						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " is playing a wild card!");
-						
+						unoView.updateGUI();
 					}
 					
 					case 13 ->

@@ -399,8 +399,9 @@ public class UnoGUI extends JFrame
 				
 				unoModel.setTopCard(wildCard);
 				gameStatusTracker.setText(wildCard.cardOwner.playerName + " played a " + wildCard.getCardColorAndTypeAsString() + ".");
-				wildCardWindow.dispose();
+				unoModel.setCurrentPlayer(unoModel.nextTurn(unoModel.getCurrentPlayer()));
 				updateGUI();
+				wildCardWindow.dispose();
 				
 			}
 			

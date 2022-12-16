@@ -93,7 +93,6 @@ public class UnoGame
 			{
 				
 				player.playerDeck.remove(playerCard);
-				currentPlayer = nextTurn(player);
 				unoView.createWildCardWindow();
 				
 			}
