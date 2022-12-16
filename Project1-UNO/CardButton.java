@@ -1,4 +1,4 @@
-import javax.swing.*;
+import javax.swing.JButton;
 
 /**
  * Lead Authors(s):
@@ -17,12 +17,20 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class CardButton extends JButton
 {
-
+	
+	//Initializes the Card field for utilization by class methods.
 	Card card;
 	
+	/**
+	 * Purpose: Class constructor specifying the CardButton's Card.
+	 * 
+	 * @param unoCard specified Card for CardButton
+	 */
 	public CardButton(Card unoCard)
 	{
+		
 		card = unoCard;
+		
 	}
-
+	
 }

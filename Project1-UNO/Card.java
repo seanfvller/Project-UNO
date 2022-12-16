@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 /**
  * Lead Authors(s):
@@ -15,103 +15,149 @@ import java.util.*;
  * 
  *         Card Type Explanations:
  *         Number Card (0-9): A basic card that can be played if its number OR
- *         color
- *         matches that of the card on the field.
+ *         color matches that of the card on the field.
+ *         
  *         Skip Card: An action card that can be played if its color matches
- *         that of
- *         the card on the field.
- *         Upon playing this card, it will skip the next player's turn.
+ *         that of the card on the field. Upon playing this card, it will 
+ *         skip the next player's turn.
+ *         
  *         Reverse Card: An action card that can be played if its color matches
- *         that
- *         of the card on the field.
- *         Upon playing this card, it will reverse the direction of the flow of
- *         the
- *         game turns.
+ *         that of the card on the field.Upon playing this card, it will reverse 
+ *         the direction of the flow of the game turns.
+ *         
+ *         Wild Card: An action card that can be played regardless of the number
+ *         of color of the card on the field. Upon playing this card, the Player
+ *         may choose its color and number before it is set as the top card.
+ *         
  *         Draw Four Card: An action card that can be played regardless of the
- *         number or color of the card on the field.
- *         Upon playing this card, the next player must draw four cards into
- *         their
- *         deck.
+ *         number or color of the card on the field. Upon playing this card, 
+ *         the next player must draw four cards into their deck.
  */
 
 public class Card
 {
 
-	/*
-	 * A Card has-a cardColor - 0: Red, 1: Blue, 2: Yellow, 3: Green, 4: Black
-	 */
+	//A Card has-a color
 	public int cardColor;
-	/*
-	 * A Card has-a cardType - 0-9: Number Card (0-9), 10: Skip Card, 11:
-	 * Reverse Card, 12: Draw Four Card
-	 */
+	// A Card has-a type
 	public int cardType;
 	// A Card has-an owner
 	public Player cardOwner;
 	// Initialization of Random object for utilization by class methods
-	private Random random = new Random();
+	private static Random random = new Random();
 
 	/**
-	 * Purpose: Class constructor, initializes cardColor and cardType as 0 (Red
-	 * 0)
+	 * Purpose: Class constructor without any arguments; intializes cardOwner as
+	 * null and cardColor and cardType as 0.
 	 */
 	Card()
 	{
+		
 		cardOwner = null;
 		cardColor = 0;
 		cardType = 0;
-
+		
 	}
 	
+	/**
+	 * Purpose: Class constructor that specifies the Card's cardOwner, and
+	 * initializes the cardColor and cardType as 0.
+	 * 
+	 * @param owner specified Player that owns the Card
+	 */
+	Card(Player owner)
+	{
+		
+		cardOwner = owner;
+		cardColor = 0;
+		cardType = 0;
+		
+	}
+	
+	/**
+	 * Purpose: Class constructor that specifies the Card's cardOwner,
+	 * cardColor, and cardType.
+	 * 
+	 * @param owner specified Player that owns the Card
+	 * @param color specified color of the Card
+	 * @param type  specified type of the card
+	 */
 	Card(Player owner, int color, int type)
 	{
+		
 		cardOwner = owner;
 		cardColor = color;
 		cardType = type;
+		
 	}
 
 	/**
-	 * Purpose: Creates and returns new Card object with randomized variables
+	 * Purpose: Creates and returns new Card object with randomized variables.
+	 * The chance that a Card will be a particular cardType is weighted, based
+	 * off of the following probabilities:
+	 * 
+	 * Draw Four: 5% chance
+	 * Wild, Reverse, or Skip Card: 20% chance
+	 * Number Card: 80% chance
+	 * 
+	 * Draw Four and Wild Cards are guaranteed to be black cards. All other card
+	 * types have a 25% chance of being any particular color.
 	 *
 	 * @return random Card object
 	 */
-	public Card createCard()
+	public static Card createCard()
 	{
 
 		Card newCard = new Card();
 		int cardTypeWeightedChance = random.nextInt(101);
 		
-		if (cardTypeWeightedChance < 86)
+		if (cardTypeWeightedChance > 94)
 		{
-			newCard.cardType = random.nextInt(10) ;
+			
+			newCard.cardType = 13;
+			
 		}
+		
+		else if (cardTypeWeightedChance > 80)
+		{
+			
+			newCard.cardType = random.nextInt(3) + 10;
+			
+		}
+		
 		else
 		{
-			newCard.cardType = random.nextInt(3) + 10;
+			
+			newCard.cardType = random.nextInt(10);
+			
 		}
 		
 		switch (newCard.cardType)
 		{
-			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ->
-			newCard.cardColor = random.nextInt(4);
-
 			
-			case 12 ->
-			newCard.cardColor = 4;
-
+			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 -> newCard.cardColor = random.nextInt(4);
+			case 12, 13 -> newCard.cardColor = 4;
+			
 		}
 
 		return newCard;
 
 	}
 
-	public String getCardTypeAndColor()
+	/**
+	 * Purpose: Returns the Card's cardColor and cardType as a String.
+	 * 
+	 * @return the Card's color and type
+	 */
+	public String getCardColorAndTypeAsString()
 	{
+		
 		return (cardColorToString() + " " + cardTypeToString());
+		
 	}
 	
 	/**
-	 * Purpose: Gets the Card's color and returns it as a string
+	 * Purpose: Gets the Card's color and returns it as a string.
 	 * 
 	 * @return the Card's color as a string
 	 */
@@ -146,7 +192,7 @@ public class Card
 	}
 
 	/**
-	 * Purpose: Gets the Card's type and returns it as a string
+	 * Purpose: Gets the Card's type and returns it as a string.
 	 * 
 	 * @return the Card's type as a string
 	 */
@@ -195,9 +241,11 @@ public class Card
 				cardTypeString = "Reverse";
 				return cardTypeString;
 			case 12:
+				cardTypeString = "Wild";
+				return cardTypeString;
+			case 13:
 				cardTypeString = "4+";
 				return cardTypeString;
-
 		}
 
 		return cardTypeString;

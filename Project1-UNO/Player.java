@@ -16,55 +16,34 @@ import java.util.ArrayList;
 
 public class Player
 {
-	// A Player has-a playerName
+	
+	// A Player has-a name
 	public String playerName;
-	// A Player has-a playerNumber
+	// A Player has-a number
 	public int playerNumber;
-	// A Player has-a nextPlayer
+	// A Player has-a next player
 	public Player nextPlayer;
-	// A Player has-a prevPlayer
+	// A Player has-a previous player
 	public Player prevPlayer;
-	// A Player has-a playerDeck
+	// A Player has-a player deck
 	public ArrayList<Card> playerDeck;
-
+	
 	/**
-	 * Purpose: Class constructor that specifies the Player's playerNumber;
-	 * initializes the Player's playerName, numberOfCards, and playerDeck, then
-	 * calls setPlayerName() to set the Player's name
+	 * Purpose: Class constructor that specifies the Player's playerName and
+	 * playerNumber, then initializes the Player's nextPlayer, prevPlayer, and playerDeck.
 	 * 
-	 * @param playerNum
+	 * @param userName specified playerName of the Player
+	 * @param userNum specified playerNumber of the Player
 	 */
 	public Player(String userName, int userNum)
 	{
+		
 		playerName = userName;
 		playerNumber = userNum;
+		nextPlayer = null;
+		prevPlayer = null;
 		playerDeck = new ArrayList<Card>();
-	}
-
-	/**
-	 * Purpose: Sets the Player's playerName to a specified String
-	 */
-	public void setPlayerName(String userName)
-	{
-		this.playerName = userName;
-	}
-
-	/**
-	 * Purpose: Sets the Player's playerNumber to a specified integer
-	 */
-	public void setPlayerNumber(int userNumber)
-	{
-		this.playerNumber = userNumber;
-	}
-
-	/**
-	 * Purpose: Removes a Card at a specified index from the Player's playerDeck
-	 * 
-	 * @param specified index of Card to remove
-	 */
-	public void removeCard(int index)
-	{
-		this.playerDeck.remove(index);
+		
 	}
 
 }

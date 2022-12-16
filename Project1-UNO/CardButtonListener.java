@@ -17,61 +17,156 @@ import java.awt.Dimension;
 
 public class CardButtonListener implements MouseListener
 {
-
+	
+	// Initialization of CardButton for utilization by class methods
 	CardButton cardButton;
-	Game unoModel;
+	// Initialization of UnoGame for utilization by class methods
+	UnoGame unoModel;
+	// Initialization of UnoGUI for utilization by class methods
 	UnoGUI unoView;
+	// Initialization of Card for utilization by class methods
 	Card unoCard;
 	
-	public CardButtonListener(CardButton button, Game model, UnoGUI view)
+	/**
+	 * Purpose: Class constructor specifying the CardButtonListener's
+	 * CardButton, UnoGame, and UnoGUI. The CardButtonListener's Card is set to
+	 * the CardButton's Card.
+	 * 
+	 * @param button specified CardButton
+	 * @param model  specified UnoGame
+	 * @param view   specified UnoGUI
+	 */
+	public CardButtonListener(CardButton button, UnoGame model, UnoGUI view)
 	{
+		
 		cardButton = button;
 		unoModel = model;
 		unoView = view;
 		unoCard = cardButton.card;
 		
-		
 	}
 	
-	public void mouseClicked(MouseEvent e)
+	/**
+	 * Purpose: Determines the behavior of the CardButton when it is clicked by
+	 * the Player. Upon clicking a Card, it is checked for playability; if it
+	 * passes, the Card is played according to the game rules. If it does not
+	 * pass, nothing happens, and the Player is advised to make a different
+	 * choice.
+	 */
+	public void mousePressed(MouseEvent e)
 	{
 		if (unoModel.checkCardValidity(unoCard) == true)
 		{
+
 			unoModel.playCard(unoCard, unoCard.cardOwner);
 			
-			switch (unoCard.cardType)
+			if (unoCard.cardOwner.playerDeck.size() == 0)
 			{
-				case 10:
-					unoView.gameStatusTracker.setText(unoModel.getCurrentPlayer() + "'s turn was skipped!");
-				case 11:
-					unoView.gameStatusTracker.setText("The direction of the game has been reversed!");
-				case 12:
-					unoView.gameStatusTracker.setText(unoModel.getCurrentPlayer() + " was forced to draw 4 cards!");
-				default:
-					unoView.gameStatusTracker.setText("Played a " + unoCard.getCardTypeAndColor());
+				
+				unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " forgot to call UNO! Their turn has been skipped, and they have been forced to draw 2 cards!");
+				unoModel.drawCard(2, unoCard.cardOwner);
+				unoModel.setCurrentPlayer(unoModel.nextTurn(unoCard.cardOwner));
+				unoView.updateGUI();
+				
 			}
-			unoView.updateGUI();
+			
+			else
+			{
+				
+				switch (unoCard.cardType)
+				{
+					
+					case 0,1,2,3,4,5,6,7,8,9 ->
+					{
+						
+						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " played a " + unoCard.getCardColorAndTypeAsString() + ".");
+						unoView.updateGUI();
+						
+					}
+					
+					case 10 ->
+					{
+						
+						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " skipped " + unoModel.nextTurn(unoCard.cardOwner).playerName + "'s turn!");
+						unoView.updateGUI();
+						
+					}
+					
+					case 11 ->
+					{
+						
+						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " reversed the direction of the game!");
+						unoView.updateGUI();
+						
+					}
+					
+					case 12 ->
+					{
+						
+						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " is playing a wild card!");
+						
+					}
+					
+					case 13 ->
+					{
+						
+						unoView.gameStatusTracker.setText(unoCard.cardOwner.playerName + " forced " + unoModel.getCurrentPlayer().playerName + " to draw 4 cards!");
+						unoView.updateGUI();
+						
+					}
+					
+				}
+			
+			}
+			
+			unoView.helpLevel = 0;
+			unoView.helpLevelTracker.setText("Help is available in " + Integer.toString(6 - unoView.helpLevel) + " draws.");
+			
 		}
+		
 		if (unoModel.checkCardValidity(unoCard) == false)
 		{
+			
 			unoView.gameStatusTracker.setText("This card cannot be played. Please select a different card.");
-			unoView.updateGUI();
+			
 		}
+		
 	}
-	
+
+	/**
+	 * Purpose: Increases the size of the CardButton when the cursor hovers over
+	 * it for better clarity.
+	 */
 	public void mouseEntered(MouseEvent e)
 	{
-		cardButton.setSize(new Dimension(130,140));
+		
+		cardButton.setSize(new Dimension(110,132));
+		cardButton.setLocation(cardButton.getLocation().x - 5,cardButton.getLocation().y - 6);
+		
 	}
 	
+	/**
+	 * Purpose: Reverts the size of the CardButton to its original size after
+	 * the cursor is no longer hovering over it.
+	 */
 	public void mouseExited(MouseEvent e)
 	{
+		
 		cardButton.setSize(unoView.BUTTON_SIZE);
+		cardButton.setLocation(cardButton.getLocation().x + 5,cardButton.getLocation().y + 6);
+		
 	}
 	
-	public void mousePressed (MouseEvent e)
+	/**
+	 * Purpose: Unimplemented MouseListener behavior.
+	 */
+	public void mouseClicked (MouseEvent e)
 	{
 	}
+	
+	/**
+	 * Purpose: Unimplemented MouseListener behavior.
+	 */
 	public void mouseReleased(MouseEvent e)
 	{
 	}
